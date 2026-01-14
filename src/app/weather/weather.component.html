@@ -1,0 +1,49 @@
+<div style="padding: 20px">
+  <h1>Weather Data for Paris</h1>
+  <button (click)="collectData()">Collect New Data</button>
+  <h2>Historical Data</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Temperature (°C)</th>
+        <th>Humidity (%)</th>
+        <th>Pressure (hPa)</th>
+        <th>Wind Speed (m/s)</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of weatherData">
+        <td>{{ data.timestamp | date : "short" }}</td>
+        <td>{{ data.temperature }}</td>
+        <td>{{ data.humidite }}</td>
+        <td>{{ data.pression }}</td>
+        <td>{{ data.vent }}</td>
+        <td>{{ data.description }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2>Temperature Chart</h2>
+  <canvas
+    baseChart
+    [data]="lineChartData"
+    [options]="lineChartOptions"
+    type="line"
+  >
+  </canvas>
+  <h2>Historical Temperature Plot</h2>
+  <img
+    *ngIf="historicalSvgUrl"
+    [src]="historicalSvgUrl"
+    alt="Historical Temperature"
+    style="max-width: 100%"
+  />
+  <h2>Sinusoidal Forecast Plot</h2>
+  <img
+    *ngIf="forecastSvgUrl"
+    [src]="forecastSvgUrl"
+    alt="Forecast Temperature"
+    style="max-width: 100%"
+  />
+</div>

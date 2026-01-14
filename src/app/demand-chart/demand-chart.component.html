@@ -1,0 +1,73 @@
+<div class="container mx-auto p-4">
+  <h2 class="text-2xl font-bold mb-4 text-black">📈 Prévision de la demande</h2>
+
+  <div class="filters mb-4 flex flex-wrap gap-4">
+    <label class="flex items-center text-black">
+      Produit :
+      <select
+        [(ngModel)]="selectedProduct"
+        (ngModelChange)="fetchPredictions()"
+        class="ml-2 p-2 border rounded"
+      >
+        <option *ngFor="let p of products" [value]="p.id_p">
+          {{ p.designation_p }}
+        </option>
+      </select>
+    </label>
+
+    <label class="flex items-center text-black">
+      Dépôt :
+      <select
+        [(ngModel)]="selectedDepot"
+        (ngModelChange)="fetchPredictions()"
+        class="ml-2 p-2 border rounded"
+      >
+        <option *ngFor="let d of depots" [value]="d.id_dep">
+          {{ d.nom_dep }}
+        </option>
+      </select>
+    </label>
+
+    <label class="flex items-center text-black">
+      Jours :
+      <select
+        [(ngModel)]="forecastDays"
+        (ngModelChange)="updateForecastDays($event)"
+        class="ml-2 p-2 border rounded"
+      >
+        <option [value]="7">7 jours</option>
+        <option [value]="14">14 jours</option>
+        <option [value]="21">21 jours</option>
+        <option [value]="30">30 jours</option>
+      </select>
+    </label>
+  </div>
+
+  <div *ngIf="loading" class="text-center text-gray-600">Chargement...</div>
+  <div *ngIf="error" class="text-center text-red-600">Erreur : {{ error }}</div>
+
+  <div *ngIf="!loading && !error" class="bg-white shadow rounded p-4">
+    <canvas
+      baseChart
+      [data]="lineChartData"
+      [options]="lineChartOptions"
+      [type]="'line'"
+      height="300"
+    ></canvas>
+
+    <table class="table-auto w-full mt-4 text-black">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2">Date</th>
+          <th class="px-4 py-2">Prévision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of predictions">
+          <td class="px-4 py-2">{{ p.Date }}</td>
+          <td class="px-4 py-2">{{ p.Forecasted_Quantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -2,44 +2,44 @@ import { HttpClient } from '@angular/common/http'
 import { EventEmitter, Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { Depot, DepotResponse } from '../depot.model'
-import { environment } from '../../../environments/environments'
+import { environment } from '../../../environments/environment.prod'
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepotService {
 
-  private apiUrl = environment.localhostUrl+"/depot"
+  private apiUrl = environment.apiUrl + "/depot"
 
-  onRefreshList =  new EventEmitter
-   
-  constructor(private http: HttpClient) {}
+  onRefreshList = new EventEmitter
+
+  constructor(private http: HttpClient) { }
 
   getDepot(page: number): Observable<Depot[]> {
     return this.http.get<Depot[]>(`${this.apiUrl}?page=${page}`);
   }
-  
-  ajoutDepot(depot: Depot): Observable<Depot>{
+
+  ajoutDepot(depot: Depot): Observable<Depot> {
     return this.http.post<Depot>(this.apiUrl, depot)
   }
 
-  supprDepot(id: number): Observable<Depot>{
+  supprDepot(id: number): Observable<Depot> {
     return this.http.delete<Depot>(`${this.apiUrl}/${id}`)
   }
 
-  getIdDepot(id:number):Observable<Depot>{
+  getIdDepot(id: number): Observable<Depot> {
     return this.http.get<Depot>(`${this.apiUrl}/${id}`)
   }
 
-  modification(id:number, depot:any):Observable<any>{
-    return this.http.put(`${this.apiUrl}/${id}`,depot);
+  modification(id: number, depot: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, depot);
   }
 
-  onSearch(query:string):Observable<any>{
+  onSearch(query: string): Observable<any> {
     return this.http.get<Depot>(`${this.apiUrl}/recherche?q=${query}`)
   }
-  countDepot(): Observable<{total_depot:number}> {
-    return this.http.get<{total_depot:number}>(`${this.apiUrl}/page/count`)
+  countDepot(): Observable<{ total_depot: number }> {
+    return this.http.get<{ total_depot: number }>(`${this.apiUrl}/page/count`)
   }
 }
 

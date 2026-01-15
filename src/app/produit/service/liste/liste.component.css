@@ -1,6 +1,7 @@
 .image{
   width: 15vh;
   height: 7vh;
+  object-fit: contain;
 }
 .modal{
 color: black;

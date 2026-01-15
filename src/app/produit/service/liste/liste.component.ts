@@ -1,30 +1,28 @@
 import { Component } from '@angular/core';
 import { AjoutProduitComponent } from '../ajout/ajout.component';
-import { environment } from '../../../../environments/environments';
+import { environment } from '../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-list-produit',
   templateUrl: './liste.component.html',
   styleUrls: ['./liste.component.css'],
 })
-export class ListeProduitComponent extends AjoutProduitComponent{
+export class ListeProduitComponent extends AjoutProduitComponent {
 
-  environment:string = environment.imageLocalhostUrl
-  
+  environment: string = environment.imageUrl
+
   searchResults: any[] = [];
   searchTerm: string = '';
-  // totalPages = this.totalPage();
-  idDelete?:number // id produit à supprimer
+  idDelete?: number
 
-  histoProduit:any  = null;
-  mouvements:any [] = [];
-  stocks:any [] = [];
-  emplacements:any[] = [];
+  histoProduit: any = null;
+  mouvements: any[] = [];
+  stocks: any[] = [];
+  emplacements: any[] = [];
 
   countProduitParMouvement?: number;
-  
+
   override ngOnInit(): void {
-  console.log("ngOnInit---");
     this.countProd()
   }
 
@@ -32,17 +30,17 @@ export class ListeProduitComponent extends AjoutProduitComponent{
     return item.id_st;
   }
 
-  totalPage():number{
+  totalPage(): number {
 
-    const limitProduits:number = 5 ;
-    const nbrProduits:any= this.sommes
+    const limitProduits: number = 5;
+    const nbrProduits: any = this.sommes
     const totalPage = nbrProduits / limitProduits
 
     return Math.ceil(totalPage)
 
   }
 
-  setIdDelete(id_p:number){
+  setIdDelete(id_p: number) {
     this.idDelete = id_p
   }
 
@@ -52,41 +50,42 @@ export class ListeProduitComponent extends AjoutProduitComponent{
     });
   }
 
-  voirLeDetail(id: number){
+  voirLeDetail(id: number) {
     try {
       this.produitService.getByIdProduit(id)
-      .subscribe(
-        (data:any)=>{
-          this.histoProduit = data
-          this.mouvements = data.mouvements
-          this.stocks = data.stocks
-
-          console.log('produits', data);
-
-          data.stocks.forEach((stock: any) => {
-            if (stock.depot && stock.depot.emplacements) {
-              stock.depot.emplacements.forEach((emplacement: any) => {
-                this.emplacements.push({
-                  nom_em: emplacement.nom_em,
-                  volume_max: emplacement.volume_max,
-                  volume_actuel: emplacement.volume_actuel
+        .subscribe(
+          (data: any) => {
+            this.histoProduit = data
+            this.mouvements = data.mouvements
+            this.stocks = data.stocks
+            data.stocks.forEach((stock: any) => {
+              if (stock.depot && stock.depot.emplacements) {
+                stock.depot.emplacements.forEach((emplacement: any) => {
+                  this.emplacements.push({
+                    nom_em: emplacement.nom_em,
+                    volume_max: emplacement.volume_max,
+                    volume_actuel: emplacement.volume_actuel
+                  });
                 });
-              });
-            }
-          });
-          
-        }
-      );
+              }
+            });
+
+          }
+        );
 
       this.mouvementService.countMouvementParProduit(id)
-      .subscribe((result :any)=>{
-        this.countProduitParMouvement = result
-        console.log("count produit par mouvement",result);
+        .subscribe((result: any) => {
+          this.countProduitParMouvement = result
+        })
 
-      })
-       
     } catch (error) {
       console.log("error", error);
     }
+  }
+  getImageUrl(filename: string) {
+    console.log("filename", filename);
+    console.log("environment", this.environment);
+
+    return `${this.environment}/fichier/${filename}`;
   }
 }

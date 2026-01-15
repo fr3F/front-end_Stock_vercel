@@ -32,7 +32,7 @@ export class AjoutProduitComponent implements OnInit {
   message = '';
   preview = '';
   imageInfos?: Observable<any>;
-  roleLocalStorage = localStorage.getItem("email");
+  roleLocalStorage = localStorage.getItem("role");
 
   constructor(
     public produitService: ProduitService,

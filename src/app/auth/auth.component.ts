@@ -33,9 +33,6 @@ export class AuthComponent {
 
     this.authService.login(this.email_ut, this.mdp_ut).subscribe(
       response => {
-
-        console.log("resp----------------", response);
-
         localStorage.setItem('token', response.token);
         localStorage.setItem('email', response.utilisateur.email_ut);
         localStorage.setItem('role', response.utilisateur.role);

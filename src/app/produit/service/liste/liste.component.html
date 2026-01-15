@@ -18,8 +18,8 @@
         <td>
           <img
             class="image"
-            src="{{ environment }}/fichier/{{ produit.photo_p }}"
-            alt="image"
+            [src]="getImageUrl(produit.photo_p)"
+            alt="{{ produit.designation_p }}"
           />
         </td>
         <td>{{ produit.designation_p }}</td>
